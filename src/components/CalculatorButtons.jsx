@@ -1,15 +1,17 @@
 import React from 'react';
 import Players from './Players';
 
-function CalculatorButton({calculation , calculationFunc}) {
+function CalculatorButton({calculation , calculationFunc, myOnclick}) {
     return (
      <div>
-<div>
-<button onClick={calculationFunc}>
+
+<button onClick={calculationFunc || myOnclick} >
+
 {calculation}
 </button>
-</div>
-     </div>
+
+
+    </div>
     );
 }
 export default CalculatorButton;

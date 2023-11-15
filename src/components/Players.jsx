@@ -4,7 +4,7 @@ import CalculatorButton from './CalculatorButtons';
 import { useState } from 'react';
 
 
-function Players({ currentPlayer, isMyTurn }) {
+function Players({ currentPlayer,  goToNextTurn , exit }) {
 
   const randNum = Math.floor(Math.random() * 100);
   const [currentNum, setCurrentNum] = useState(randNum);
@@ -16,8 +16,10 @@ function Players({ currentPlayer, isMyTurn }) {
 
     if (!GameOver && currentNum === 100) {
       setGameOver(true);
-      alert("You Won!");
+      alert("You Won!  You reached 100!!! ");
       generateNewNumber();
+      setScore(0);
+    
       return true;
     }
 
@@ -30,22 +32,26 @@ function Players({ currentPlayer, isMyTurn }) {
   };
 
 
-  return (
+  
+return (
+  <div className='players'>
+    <div>
+      <h3> your number: {currentNum}</h3>
+    </div>
+  
 
-
-    <div className='players'>
-      <div>
-        <h3>your number:{currentNum}</h3>
-      </div>
+    
       <div className='ContainerButton' >
-        <div className='Button' onClick={() => { if (currentPlayer && !GameOver) { setScore(Score + 1); isMyTurn(); } }}>
+        <div className='Button' onClick={() => { if (currentPlayer && !GameOver) { setScore(Score + 1); goToNextTurn(); } }}>
 
           <CalculatorButton calculation={"+1"} calculationFunc={() => { if (currentPlayer && !GameOver) (setCurrentNum(Math.floor(currentNum + 1))) }} />
           <CalculatorButton calculation={"-1"} calculationFunc={() => { if (currentPlayer && !GameOver) (setCurrentNum(Math.floor(currentNum - 1))) }} />
-          <CalculatorButton calculation={"/2"} calculationFunc={() => { if (currentPlayer && !GameOver) (setCurrentNum(Math.floor(currentNum / 2))) }} />
           <CalculatorButton calculation={"*2"} calculationFunc={() => { if (currentPlayer && !GameOver) (setCurrentNum(Math.floor(currentNum * 2))) }} />
-        </div>
-      </div>
+          <CalculatorButton calculation={"/2"} calculationFunc={() => { if (currentPlayer && !GameOver) (setCurrentNum(Math.floor(currentNum / 2))) }} />
+        
+        
+          {currentPlayer && <CalculatorButton calculation={"Exit"} myOnclick={exit} />}
+      </div></div>
       <p>the number of steps:{Score}</p>
 
       {win(currentNum)}
