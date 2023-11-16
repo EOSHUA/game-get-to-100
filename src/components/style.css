@@ -30,13 +30,13 @@ body {
     margin: 10px;
     padding: 15px;
   }
-  button{
+   button{
     width: 200px;
     height: 30px;
     margin: 100%;
     
 
-  }
+  } 
 .Button {
     width: 1%;
     cursor: pointer;
@@ -60,4 +60,49 @@ body {
   .ContainerButton:hover {
     background-color: #435f80;
   }
+  .mainTitle {
+    color:#3367d6;
+    font-size: 40px;
+    margin-bottom: 50px;
+    animation: fadeInUp 1s ease-in-out;
+  }
   
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 10;
+    transform: translateY(0);
+  }
+}
+
+  .registrationForm{
+    width: 700px;
+    height: 650px;
+    background-color: #9b9494;
+  
+  }
+  
+  .buttonRegister{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10% ;
+    height: 20px;
+    margin-left: 25%;
+    background-color: #7c838a;
+   
+  }
+
+  .inputRegister {
+    width: 95%;
+    height: 30px;
+    background-color: #d1d8e0;       
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+   
+  }

@@ -4,7 +4,7 @@ import CalculatorButton from './CalculatorButtons';
 import { useState } from 'react';
 
 
-function Players({ currentPlayer,  goToNextTurn , exit }) {
+function Players({ currentPlayer,  goToNextTurn , exit, playerName }) {
 
   const randNum = Math.floor(Math.random() * 100);
   const [currentNum, setCurrentNum] = useState(randNum);
@@ -36,13 +36,14 @@ function Players({ currentPlayer,  goToNextTurn , exit }) {
 return (
   <div className='players'>
     <div>
-      <h3> your number: {currentNum}</h3>
+      <h3>{playerName} your number: {currentNum}</h3>
     </div>
   
 
     
       <div className='ContainerButton' >
-        <div className='Button' onClick={() => { if (currentPlayer && !GameOver) { setScore(Score + 1); goToNextTurn(); } }}>
+        <div className='Button' onClick={() => { if (currentPlayer && !GameOver)
+           { setScore(Score + 1); goToNextTurn(); } }}>
 
           <CalculatorButton calculation={"+1"} calculationFunc={() => { if (currentPlayer && !GameOver) (setCurrentNum(Math.floor(currentNum + 1))) }} />
           <CalculatorButton calculation={"-1"} calculationFunc={() => { if (currentPlayer && !GameOver) (setCurrentNum(Math.floor(currentNum - 1))) }} />
