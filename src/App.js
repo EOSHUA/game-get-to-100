@@ -1,6 +1,11 @@
 import './App.css';
 import Players from './components/Players';
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
+import { saveToLocalStorage, loadFromLocalStorage } from './components/LocalStorage';
+import WinnersTable from './components/winnersTable';
+
+
+
 
 function App() {
   const [players, setPlayers] = useState([]);
@@ -8,12 +13,15 @@ function App() {
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
   const [numPlayers, setNumPlayers] = useState(0);
   const [playerNames, setPlayerNames] = useState('');
+  const [victories, setVictories] = useState(0);
+  const [winners, setWinners] = useState([]);
 
-  const updateNextPlayer = (prevPlayers) => {
-    const next = (currentPlayer + 1) % prevPlayers.length;
-    setCurrentPlayer(next);
-    const newPlayers = prevPlayers.map((_, index) => index === next);
-    return newPlayers;
+
+    const updateNextPlayer = (prevPlayers) => {
+      const next = (currentPlayer + 1) % prevPlayers.length;
+      setCurrentPlayer(next);
+      const newPlayers = prevPlayers.map((_, index) => index === next);
+      return newPlayers;
   };
 
   const deletePlayer = (prevPlayers) => {
@@ -24,8 +32,11 @@ function App() {
       const nextPlayerIndex = currentPlayer % newPlayers.length;
       setCurrentPlayer(nextPlayerIndex);
     }
+    saveToLocalStorage('players', newPlayers);
     return newPlayers;
   };
+
+  
 
   const exitGame = () => {
     setPlayers(deletePlayer);
@@ -47,15 +58,39 @@ function App() {
     const newPlayerNames = playerNames.split(',').map(name => name.trim());
     if (newPlayerNames.length === Number(numPlayers)) {
       setPlayers(newPlayerNames);
+      localStorage.setItem('players', JSON.stringify(newPlayerNames));
       setIsRegistrationOpen(false);
     } else {
       alert('Number of entered names does not match the selected number of players.');
     }
   };
+  const handleWin = (playerName) => {
+    setWinners(prevWinners => {
+      const winnerIndex = prevWinners.findIndex(winner => winner.name === playerName);
+      if (winnerIndex !== -1) {
+        prevWinners[winnerIndex].wins += 1;
+      } else {
+        prevWinners.push({ name: playerName, wins: 1 });
+      }
+      return [...prevWinners];
+    });
+  };
+
+   useEffect(() => {
+    saveToLocalStorage('victories', victories);
+  }, [victories]);
+
+  useEffect(() => {
+    const storedVictories = loadFromLocalStorage('victories');
+    if (storedVictories !== null) {
+      setVictories(storedVictories);
+    }
+  }, []);
+
 
   return (
     <>
-    <h1 className='mainTitle'>Welcome to the go-to-100 game</h1>
+    <h1 className='mainTitle'>Welcome to the get-to-100 game</h1>
       {isRegistrationOpen ? (
         <div className="registrationForm">
           
@@ -75,11 +110,18 @@ function App() {
               goToNextTurn={OnGoToNextTurn}
               exit={exitGame}
               playerName={playerName}
+              onWin={handleWin}
             />
           ))}
         </div>
       )}
       <h1>Current Player: {currentPlayer + 1}</h1>
+      
+
+      <WinnersTable winners={winners} />
+
+
+    
     </>
   );
 }
