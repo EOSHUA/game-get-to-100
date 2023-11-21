@@ -9,7 +9,7 @@ function WinnersTable({ winners }) {
         <thead>
           <tr>
              <th>Player's Name</th>
-             <th>Number of Wins</th>
+             <th>The number of steps you took to win</th>
           </tr>
         </thead>
         <tbody>

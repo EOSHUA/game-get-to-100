@@ -5,7 +5,7 @@ import { useState , useEffect } from 'react';
 import { saveToLocalStorage, loadFromLocalStorage } from '../components/LocalStorage';
 
 
-function Players({ currentPlayer,  goToNextTurn , exit, playerName }) {
+function Players({ currentPlayer,  goToNextTurn , exit, playerName , onWin }) {
 
   const randNum = Math.floor(Math.random() * 100);
   const [currentNum, setCurrentNum] = useState(randNum);
@@ -14,7 +14,9 @@ function Players({ currentPlayer,  goToNextTurn , exit, playerName }) {
   const [showsPlayerName , setShowsPlayerName] = useState(playerName);
   const [victories, setVictories] = useState(0);
 
-
+  useEffect(() => {
+    setShowsPlayerName(playerName);
+  }, [playerName]);
  
   const win = (currentNum) => {
     if (!GameOver && currentNum === 100) {
@@ -24,6 +26,7 @@ function Players({ currentPlayer,  goToNextTurn , exit, playerName }) {
       alert("You Won!  You reached 100!!! ");
       generateNewNumber();
       setScore(0);
+      onWin && onWin(showsPlayerName);
       return true;
     }
     return false;

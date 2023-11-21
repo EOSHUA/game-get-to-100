@@ -28,13 +28,15 @@ function App() {
     const newPlayers = prevPlayers.filter((_, index) => index !== currentPlayer);
     if (newPlayers.length === 0) {
       setCurrentPlayer(0);
+    } else if (currentPlayer < newPlayers.length) {
+      setCurrentPlayer(currentPlayer);
     } else {
-      const nextPlayerIndex = currentPlayer % newPlayers.length;
-      setCurrentPlayer(nextPlayerIndex);
+      setCurrentPlayer(0);
     }
     saveToLocalStorage('players', newPlayers);
     return newPlayers;
   };
+  
 
   
 
@@ -64,9 +66,11 @@ function App() {
       alert('Number of entered names does not match the selected number of players.');
     }
   };
-  const handleWin = (playerName) => {
-    setWinners(prevWinners => {
-      const winnerIndex = prevWinners.findIndex(winner => winner.name === playerName);
+
+  
+  const  tableWin = (playerName) => {
+    setWinners((prevWinners) => {
+      const winnerIndex = prevWinners.findIndex((winner) => winner.name === playerName);
       if (winnerIndex !== -1) {
         prevWinners[winnerIndex].wins += 1;
       } else {
@@ -75,6 +79,7 @@ function App() {
       return [...prevWinners];
     });
   };
+  
 
    useEffect(() => {
     saveToLocalStorage('victories', victories);
@@ -109,8 +114,8 @@ function App() {
               currentPlayer={index === currentPlayer}
               goToNextTurn={OnGoToNextTurn}
               exit={exitGame}
+              onWin={tableWin}
               playerName={playerName}
-              onWin={handleWin}
             />
           ))}
         </div>
